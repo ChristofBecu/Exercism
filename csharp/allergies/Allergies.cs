@@ -1,45 +1,30 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
+[Flags]
 public enum Allergen
 {
-    Eggs,       
-    Peanuts,    
-    Shellfish,
-    Strawberries,
-    Tomatoes,
-    Chocolate,
-    Pollen,
-    Cats
+    Eggs = 1,       
+    Peanuts = 2,    
+    Shellfish = 4,
+    Strawberries = 8,
+    Tomatoes = 16,
+    Chocolate = 32,
+    Pollen = 64,
+    Cats = 128
 }
 
 public class Allergies
 {
-    private int _mask;
-    public Allergies(int mask) => _mask = mask & TotalValuesOfAllergen();
-
+    private Allergen possitiveAllergens;
+    public Allergies(int mask) => possitiveAllergens = (Allergen)mask;
     public bool IsAllergicTo(Allergen allergen) => 
-        (_mask & ValueOfAllergen((int)allergen)) != 0;
+        (possitiveAllergens & allergen) == allergen;
 
-    public Allergen[] List()
-    {
-        List<Allergen> possitiveAllergies = new List<Allergen>();
-        foreach (Allergen allergen in IndexesOfAllergens)
-        {
-            if (IsAllergicTo(allergen))
-                possitiveAllergies.Add(allergen);
-        }
-        return possitiveAllergies.ToArray();
-    }
-
-    private static Array IndexesOfAllergens => Enum.GetValues(typeof(Allergen));
-
-    private int ValueOfAllergen(int allergenIndex) => 1 << allergenIndex;
-
-    private int TotalValuesOfAllergen() 
-    {
-        int totalValues = 0;
-        foreach (Allergen allergen in IndexesOfAllergens)
-            totalValues += ValueOfAllergen((int)allergen);
-        return totalValues;
-    }
+    public Allergen[] List() => 
+        Enum.GetValues(typeof(Allergen))
+            .Cast<Allergen>()
+            .Where(predicate: IsAllergicTo)
+            .ToArray<Allergen>();
 }
