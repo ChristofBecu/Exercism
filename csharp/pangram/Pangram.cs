@@ -8,7 +8,8 @@ public static class Pangram
     {
         var alphabet = new HashSet<char>("abcdefghijklmnopqrstuvwxyz");
         var cleanInput = new HashSet<char>(input.ToLower());
-        cleanInput.RemoveWhere(character => !char.IsLetter(character));
+        bool IsNotLetter(char c) => !char.IsLetter(c);
+        cleanInput.RemoveWhere(character => IsNotLetter(character));
         return cleanInput.SetEquals(alphabet);
     }
 }
