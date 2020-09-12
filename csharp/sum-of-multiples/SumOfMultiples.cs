@@ -1,34 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public static class SumOfMultiples
 {
-    public static int Sum(IEnumerable<int> multiples, int max)
-    {
-        int sum = 0;
-        HashSet<int> unique = ExtractUniqueMultiples(multiples, max);
-
-        foreach (int i in unique)
-            sum += i;
-
-        return sum;
-    }
-
-    private static HashSet<int> ExtractUniqueMultiples(IEnumerable<int> multiples, int max)
-    {
-        HashSet<int> unique = new HashSet<int>();
-        foreach (int i in multiples)
-        {
-            if (i != 0)
-            {
-                for (int j = i; j < max; j++)
-                {
-                    if (j % i == 0)
-                        unique.Add(j);
-                }
-            }
-        }
-
-        return unique;
-    }
+    public static int Sum(IEnumerable<int> multiples, int max) => 
+        (   from dividend in Enumerable.Range(1, max - 1)
+            from divisor in multiples
+            where divisor != 0 && dividend % divisor == 0
+            select dividend
+        ).Distinct().Sum();
 }
