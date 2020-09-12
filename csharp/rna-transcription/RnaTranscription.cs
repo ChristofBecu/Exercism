@@ -2,37 +2,19 @@ using System;
 
 public static class RnaTranscription
 {
-    public static string ToRna(string nucleotide)
+    public static string ToRna(string DNA_strand)
     {
-// G -> C
-// C -> G
-// T -> A
-// A -> U
-
-// ACGTGGTCTTAA
-// UGCACCAGAAUU
-        var n = nucleotide.ToCharArray();
-        for(int i = 0; i < n.Length; i++) {
-            switch (n[i])
+        int strandLength = DNA_strand.Length;
+        char[] RNA_strand = new char[strandLength];
+        for(int i = 0; i < strandLength; i++) {
+            RNA_strand[i] = DNA_strand[i] switch
             {
-                case 'C':
-                    n[i] = 'G';
-                    break;
-                case 'G':
-                    n[i] = 'C';
-                    break;
-                case 'T':
-                    n[i] = 'A';
-                    break;
-                case 'A':
-                    n[i] = 'U';
-                    break;
-                default:
-                    n[i] = ' ';
-                    break;
-            }          
+                'C' => 'G',
+                'G' => 'C',
+                'T' => 'A',
+                'A' => 'U'
+            };
         }
-
-        return string.Join("", n);
+        return string.Join("", RNA_strand);
     }
 }
