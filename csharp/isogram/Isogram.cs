@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -6,12 +7,21 @@ public static class Isogram
 {
     public static bool IsIsogram(string word) 
     {
-        word =  RemoveNonAlphabetics(word.ToLower());
-        return word == RemoveDuplicateCharacters(word);
+        word = word.RemoveNonAlpha();
+
+        return word switch
+        {
+            "" => true,
+            _ => word == word.RemoveDuplicates()
+        };
     }
 
-    public static string RemoveDuplicateCharacters(string s) => string.Join("", new HashSet<char>(s).ToArray());
+    public static string RemoveDuplicates(this string word) =>
+        string.Concat(word.Distinct().Select(s => s.ToString()));
 
-    public static string RemoveNonAlphabetics(string s) => Regex.Replace(s,"[^A-Za-z]",""); 
-
+    public static string RemoveNonAlpha(this string word) =>
+        string.Concat(word
+                .ToLower()
+                .Where(c => char.IsLetter(c))
+                .Select(s => s.ToString()));
 }
