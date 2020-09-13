@@ -100,4 +100,10 @@ public class SumOfMultiplesTests
     {
         Assert.Equal(39614537, SumOfMultiples.Sum(new[] { 2, 3, 5, 7, 11 }, 10000));
     }
+
+    [Fact]
+    public void Multiples_of_1999999999_up_to_2billion()
+    {
+        Assert.Equal(1_999_999_999, SumOfMultiples.Sum(new[] { 1_999_999_999 }, 2_000_000_000));
+    }
 }
