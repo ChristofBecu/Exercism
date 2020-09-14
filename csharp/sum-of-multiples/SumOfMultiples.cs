@@ -6,17 +6,16 @@ public static class SumOfMultiples
 {
     public static int Sum(IEnumerable<int> multiples, int max)
     {
-        if (multiples.Any() && max > multiples.Min())
+        if (multiples.Any())
         {
-            List<int> multiplesRange = new List<int>();
-            for (int i = multiples.Min(); i < max; i++)
-                multiplesRange.Add(i);
+            int min = multiples.Min();
+            int count = max - min;
 
-            return (from dividend in multiplesRange
-                    from divisor in multiples
-                    where divisor != 0 && dividend % divisor == 0
-                    select dividend)
-                .Distinct()
+            if (count <= 0) return 0;
+
+            return Enumerable.Range(min, count)
+                .Where(dividend => multiples
+                    .Any(divisor => divisor != 0 && dividend % divisor == 0))
                 .Sum();
         }
         return 0;
