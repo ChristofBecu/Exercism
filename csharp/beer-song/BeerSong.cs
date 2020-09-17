@@ -10,17 +10,13 @@ public static class BeerSong
         {
             song += startBottles switch
             {
-                2 => $"{startBottles} bottles of beer on the wall, {startBottles} bottles of beer.\n" +
-                     $"Take one down and pass it around, {--startBottles} bottle of beer on the wall.",
+                2 => ManyBottles(startBottles) + TakeLastButOne(--startBottles),
 
-                1 => $"{startBottles} bottle of beer on the wall, {startBottles--} bottle of beer.\n" +
-                     "Take it down and pass it around, no more bottles of beer on the wall.",
+                1 => OneBottle(startBottles--),
 
-                0 => "No more bottles of beer on the wall, no more bottles of beer.\n" +
-                     "Go to the store and buy some more, 99 bottles of beer on the wall.",
+                0 => NoBottles(),
 
-                _ => $"{startBottles} bottles of beer on the wall, {startBottles} bottles of beer.\n" +
-                     $"Take one down and pass it around, {--startBottles} bottles of beer on the wall."
+                _ => ManyBottles(startBottles) + TakeOne(--startBottles)
             };
 
             if (takeDown == 0)
@@ -29,4 +25,21 @@ public static class BeerSong
         }
         return song;
     }
+
+    private static string ManyBottles(int number) => 
+        $"{number} bottles of beer on the wall, {number} bottles of beer.\n";
+
+    private static string OneBottle(int number) => 
+        $"{number} bottle of beer on the wall, {number} bottle of beer.\n" +
+        "Take it down and pass it around, no more bottles of beer on the wall.";
+
+    private static string TakeOne(int number) =>
+        $"Take one down and pass it around, {number} bottles of beer on the wall.";
+
+    private static string TakeLastButOne(int number) =>
+        $"Take one down and pass it around, {number} bottle of beer on the wall.";
+
+    private static string NoBottles() =>
+        "No more bottles of beer on the wall, no more bottles of beer.\n" +
+        "Go to the store and buy some more, 99 bottles of beer on the wall.";
 }
